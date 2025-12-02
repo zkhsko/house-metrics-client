@@ -11,7 +11,10 @@
 // #define WIFI_SSID "rigongyizu"
 // #define WIFI_PASSWORD "xiaozu100000"
 
-#define WIFI_SSID "TP-LINK_F65D"
+// #define WIFI_SSID "TP-LINK_F65D"
+// #define WIFI_PASSWORD "lidongpo"
+
+#define WIFI_SSID "HUAWEI-F161"
 #define WIFI_PASSWORD "lidongpo"
 
 WiFiClient net;

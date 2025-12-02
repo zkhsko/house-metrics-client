@@ -1,9 +1,15 @@
+#include "WString.h"
 #ifndef _MESSAGE_MANAGER_H_
 #define _MESSAGE_MANAGER_H_
 
 #include <WiFi.h>
 #include <MQTT.h>
 #include "utils.h"
+
+// 测试环境
+// #define MESSAGE_TOPIC_PRIFIX "/GgkdHit3oYTChLQC/"
+// 生产环境
+#define MESSAGE_TOPIC_PRIFIX "/ykGtJMDoqtbuyLTt/"
 
 class MessageManager {
 public:
@@ -19,7 +25,7 @@ public:
 
   bool publishMessage(String deviceId, String metricTime, String metricType, float metricValue) {
     String payload = deviceId + "\n0\n" + metricTime + "\n" + metricType + "\n" + String(metricValue, 2);
-    return mqttClient.publish("/GgkdHit3oYTChLQC/metrics", payload);
+    return mqttClient.publish(String(MESSAGE_TOPIC_PRIFIX) + "metrics", payload);
   }
 
   void loop() {
@@ -94,8 +100,8 @@ private:
 
     Serial.println("\nMessage client connected!");
 
-    mqttClient.subscribe("/GgkdHit3oYTChLQC/settings");
-    mqttClient.subscribe("/GgkdHit3oYTChLQC/" + String(deviceId) + "/settings");
+    mqttClient.subscribe(String(MESSAGE_TOPIC_PRIFIX) + "settings");
+    mqttClient.subscribe(String(MESSAGE_TOPIC_PRIFIX) + String(deviceId) + "/settings");
   }
 };
 
