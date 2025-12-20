@@ -22,6 +22,7 @@ static constexpr char MQTT_PASS[] = "user0";
 
 static constexpr char NTP_SERVER[] = "ntp.aliyun.com";
 static constexpr uint64_t NTP_RESYNC_MS = 6ULL * 60 * 60 * 1000;
+static constexpr TickType_t NTP_RESYNC_TICKS = NTP_RESYNC_MS / portTICK_PERIOD_MS;  // avoid pdMS_TO_TICKS overflow
 
 // ESP32-S2: pick a bidirectional GPIO away from flash/PSRAM pins for OneWire.
 static constexpr gpio_num_t ONEWIRE_PIN = GPIO_NUM_4;  // DS18B20 data pin, needs pull-up
@@ -337,7 +338,7 @@ void setup() {
   xTaskCreate(led_task, "led", 2048, nullptr, 1, nullptr);
   xTaskCreate(wifi_task, "wifi", 4096, nullptr, 5, nullptr);
   xTaskCreate(telemetry_task, "telemetry", 3072, nullptr, 4, nullptr);
-  g_ntp_timer = xTimerCreate("ntp", pdMS_TO_TICKS(NTP_RESYNC_MS), pdTRUE, nullptr, ntp_timer_cb);
+  g_ntp_timer = xTimerCreate("ntp", NTP_RESYNC_TICKS, pdTRUE, nullptr, ntp_timer_cb);
   xTimerStart(g_ntp_timer, 0);
 }
 
